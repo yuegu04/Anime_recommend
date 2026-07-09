@@ -1,0 +1,29 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+back-api/venv_back/
+
+# ===== Frontend =====
+front-media/node_modules/
+front-media/dist/
+front-media/.vite/
+
+# ===== Env / secrets =====
+.env
+*.local
+
+# ===== Logs & diagnostics =====
+back-api/logs/
+*.log
+
+# ===== Editor / OS =====
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ===== Project data (not source) =====
+.codebuddy/
