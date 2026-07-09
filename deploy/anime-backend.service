@@ -1,0 +1,18 @@
+[Unit]
+Description=Anime Recommendation Backend (FastAPI)
+After=network.target mysql.service
+Requires=mysql.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/anime/back-api
+# 单 worker，适配 1.6GiB 内存；只监听本机，由 Nginx 反代
+ExecStart=/opt/anime/back-api/venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000 --workers 1
+Restart=on-failure
+RestartSec=5
+# 限制内存，避免偶发 OOM 拖垮整机
+MemoryMax=1G
+
+[Install]
+WantedBy=multi-user.target

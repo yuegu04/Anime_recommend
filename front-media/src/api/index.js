@@ -2,7 +2,8 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 
 const api = axios.create({
-  baseURL: 'http://127.0.0.1:8000',
+  // 生产环境由 Nginx 反代，走同源相对路径；本地开发可通过 VITE_API_BASE 覆盖
+  baseURL: import.meta.env.VITE_API_BASE || '',
   timeout: 15000,
 })
 
