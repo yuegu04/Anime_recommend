@@ -2,11 +2,13 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from urllib.parse import quote_plus
 
 from app.config import DB_USER, DB_PWD, DB_HOST, DB_PORT, DB_NAME
 
 # 数据库连接地址
-SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{DB_USER}:{DB_PWD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+# 密码经 URL 编码，避免密码中包含 @、:、/、% 等特殊字符时破坏连接串解析
+SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{DB_USER}:{quote_plus(DB_PWD)}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
 # 创建数据库引擎
 engine = create_engine(
