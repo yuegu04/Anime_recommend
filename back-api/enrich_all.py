@@ -4,7 +4,7 @@ import time
 sys.path.insert(0, ".")
 from app.database import SessionLocal
 from app.models.media import Media
-from app.metadata import fetch_metadata_by_subject_id
+from app.metadata import fetch_metadata_by_subject_id, fetch_real_anime_metadata
 
 db = SessionLocal()
 try:
@@ -36,6 +36,10 @@ try:
             # 通过 Bangumi subject_id 精确查
             if media.subject_id:
                 metadata = fetch_metadata_by_subject_id(media.subject_id)
+
+            # subject_id 查不到时，回退到按标题搜索
+            if not metadata:
+                metadata = fetch_real_anime_metadata(name)
 
             if not metadata:
                 skip += 1

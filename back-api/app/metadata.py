@@ -5,7 +5,21 @@ from typing import Optional
 
 import requests
 
+from app.config import BANGUMI_TOKEN
+
 BANGUMI_API = "https://api.bgm.tv/v0"
+
+
+def _auth_headers() -> dict:
+    """构造请求头；若配置了 BANGUMI_TOKEN 则带上 Bearer 鉴权。
+    Bangumi v0 API 必须携带 token，否则返回 401，导致无法补全封面/简介。"""
+    headers = {
+        "User-Agent": "media-recommend/1.0 (personal project)",
+        "Accept": "application/json",
+    }
+    if BANGUMI_TOKEN:
+        headers["Authorization"] = f"Bearer {BANGUMI_TOKEN}"
+    return headers
 
 
 def _strip_html(value: Optional[str]) -> str:
@@ -55,9 +69,7 @@ def fetch_metadata_by_subject_id(subject_id: int) -> Optional[dict]:
 
     url = f"{BANGUMI_API}/subjects/{subject_id}"
     try:
-        response = requests.get(url, timeout=15, headers={
-            "User-Agent": "media-recommend/1.0 (personal project)"
-        })
+        response = requests.get(url, timeout=15, headers=_auth_headers())
         if response.status_code == 404:
             return None
         response.raise_for_status()
@@ -101,9 +113,7 @@ def fetch_real_anime_metadata(title: str) -> Optional[dict]:
         "max_results": 5,
     }
     try:
-        response = requests.get(url, params=params, timeout=15, headers={
-            "User-Agent": "media-recommend/1.0 (personal project)"
-        })
+        response = requests.get(url, params=params, timeout=15, headers=_auth_headers())
         response.raise_for_status()
         data = response.json()
         results = data.get("list") or []

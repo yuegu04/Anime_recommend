@@ -34,6 +34,10 @@ DB_HOST = os.getenv("DB_HOST", "127.0.0.1")
 DB_PORT = os.getenv("DB_PORT", "3306")
 DB_NAME = os.getenv("DB_NAME", "media_recommend")
 
+# ---- Bangumi API 鉴权（补全封面/简介需要）----
+# 在 https://bgm.tv/settings/api 生成 Personal Access Token 后填入 .env
+BANGUMI_TOKEN = os.getenv("BANGUMI_TOKEN", "")
+
 # ---- 跨域：允许的前端来源（逗号分隔）----
 CORS_ORIGINS = [
     o.strip()
